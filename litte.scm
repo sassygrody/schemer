@@ -178,11 +178,157 @@
 (plus 5 2)
 (+ 5 2)
 
-(define -
+(define minus
   (lambda (n m)
     (cond
      ((zero? m) n)
      (else (sub1 (minus n (sub1 m)))))))
 
 
+(minus 5 2)
 (- 5 2)
+
+
+(define addtup
+  (lambda (tup)
+    (cond
+     ((null? tup) 0)
+     (else
+      (+ (car tup) (addtup (cdr tup)))))))
+
+(addtup '(1 2 3 4))
+
+
+(define multiply
+  (lambda (n m)
+    (cond
+     ((zero? m) 0)
+     (else (+ n (multiply n (sub1 m)))))))
+
+(multiply 3 5)
+
+(define tupplus
+  (lambda (tup1 tup2)
+    (cond
+     ((and (null? tup1) (null? tup2)))
+     (quote ())
+     (else
+      (cons (plus (car tup1) (car tup2))
+            (tupplus (cdr tup1) (cdr tup2)))))))
+
+
+(define tupplus
+  (lambda (tup1 tup2)
+    (cond
+     ((null? tup1) tup2)
+     ((null? tup2) tup1)
+     (else
+      (cons ( + (car tup1) (car tup2))
+            (tupplus (cdr tup1) (cdr tup2)))))))
+
+(tupplus '(2 3 1) '(2 3 9))
+(tupplus '(1 5) '(5 4 9 1))
+(tupplus '() '())
+
+(define greaterThan
+  (lambda (n m)
+    (cond
+     ((zero? n) #f)
+     ((zero? m) #t)
+     (else (greaterThan (sub1 n) (sub1 m))))))
+
+(greaterThan '5 '90)
+(greaterThan '80 '2)
+(greaterThan '3 '3)
+(> '500 '90)
+
+(define lessThan
+  (lambda (n m)
+    (cond
+     ((zero? m) #f)
+     ((zero? n) #t)
+     (else (lessThan (sub1 n) (sub1 m))))))
+
+(lessThan '5 '90)
+(lessThan '800 '10)
+(lessThan '8 '8)
+
+
+(define equalTo
+  (lambda (n m)
+    (cond
+     ((zero? m) (zero? n))
+     ((zero? n) #f)
+     (else (equalTo (sub1 n) (sub1 m))))))
+
+(equalTo '3 '3)
+(equalTo '3 '8)
+
+(define equalToTo
+  (lambda (n m)
+    (cond
+     ((> n m) #f)
+     ((< n m) #f)
+     (else #t))))
+
+(equalToTo '3 '3)
+(equalToTo '3 '8)
+
+
+(define powerOf
+  (lambda (n m)
+    (cond
+     ((zero? m) 1)
+     (else (multiply n (powerOf n (sub1 m)))))))
+
+(powerOf 1 1)
+(powerOf 2 3)
+(powerOf 5 3)
+
+
+(define length
+  (lambda (lat)
+    (cond
+     ((null? lat) 0)
+     (else (add1 (length (cdr lat)))))))
+
+(length '(this is a lat))
+
+(define pick
+  (lambda (n lat)
+    (cond
+     ((zero? (sub1 n)) (car lat))
+     (else (pick (sub1 n) (cdr lat))))))
+
+(pick '4 '(Pick the number four please))
+
+(define rempick
+  (lambda (n lat)
+    (cond
+     ((zero? (sub1 n)) (cdr lat))
+    (else (cons (car lat) (rempick (sub1 n) (cdr lat)))))))
+
+(rempick '4 '(Remove the number four from the list please))
+
+
+(define noNums
+  (lambda (lat)
+    (cond
+     ((null? lat) (quote ()))
+     (else (cond
+            ((number? (car lat)) (noNums (cdr lat)))
+            (else (cons (car lat) (noNums (cdr lat)))))))))
+
+(noNums '(5 there are 3 numbers in this 9 list.))
+
+(define allNums
+  (lambda (lat)
+    (cond
+     ((null? lat) (quote ()))
+     (else (cond
+            ((number? (car lat))
+             (cons (car lat)
+                   (allNums (cdr lat))))
+            (else (allNums (cdr lat))))))))
+
+(allNums '(4 There are 4 words 8))
